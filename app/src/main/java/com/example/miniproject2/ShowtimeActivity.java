@@ -51,16 +51,29 @@ public class ShowtimeActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        if (movieId == -1) return;
-
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            Movie movie = AppDatabase.getInstance(this).movieDAO().findById(movieId);
-            List<Showtime> showtimes = AppDatabase.getInstance(this).showtimeDAO().getByMovieId(movieId);
+            Movie movie = null;
+            List<Showtime> showtimes;
+            if (movieId == -1) {
+                showtimes = AppDatabase.getInstance(this).showtimeDAO().getAll();
+            } else {
+                movie = AppDatabase.getInstance(this).movieDAO().findById(movieId);
+                showtimes = AppDatabase.getInstance(this).showtimeDAO().getByMovieId(movieId);
+            }
 
+            Movie finalMovie = movie;
             runOnUiThread(() -> {
-                if (movie != null) {
-                    ((TextView) findViewById(R.id.tvShowtimeMovieTitle)).setText(movie.getTitle());
+                TextView tvMovieTitle = findViewById(R.id.tvShowtimeMovieTitle);
+                TextView tvTheater = findViewById(R.id.tvShowtimeTheater);
+
+                if (finalMovie != null) {
+                    tvMovieTitle.setText(finalMovie.getTitle());
+                    tvTheater.setText("Chọn suất chiếu");
+                } else {
+                    tvMovieTitle.setText("Tất cả suất chiếu");
+                    tvTheater.setText("Danh sách toàn hệ thống");
                 }
+
                 showtimeList.clear();
                 showtimeList.addAll(showtimes);
                 adapter.notifyDataSetChanged();

@@ -12,16 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MiniProject2">
 
-        <!-- Login Screen (Launcher) -->
+        <!-- Home Screen (Launcher) -->
         <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".MainActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Login Screen -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Movie List Screen -->
         <activity
@@ -51,11 +56,6 @@
             android:name=".TicketActivity"
             android:exported="false"
             android:parentActivityName=".SeatSelectionActivity" />
-
-        <!-- Original MainActivity (kept for compatibility) -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
 
     </application>
 
