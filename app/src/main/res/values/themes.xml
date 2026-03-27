@@ -1,9 +1,77 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Base.Theme.MiniProject2" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/cinema_red</item>
+        <item name="colorPrimaryDark">@color/cinema_red_dark</item>
+        <item name="colorPrimaryVariant">@color/cinema_red_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/cinema_gold</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSurface">@color/bg_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorBackground">@color/bg_dark</item>
+        <item name="android:colorBackground">@color/bg_dark</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="materialButtonStyle">@style/Widget.Cinema.Button</item>
+        <item name="textInputStyle">@style/Widget.Cinema.TextInputLayout</item>
+        <item name="toolbarStyle">@style/Widget.Cinema.Toolbar</item>
     </style>
 
     <style name="Theme.MiniProject2" parent="Base.Theme.MiniProject2" />
+
+    <!-- Cinema Button Style -->
+    <style name="Widget.Cinema.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/cinema_red</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+    <!-- Cinema TextInputLayout -->
+    <style name="Widget.Cinema.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/cinema_red</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxBackgroundColor">#1A2040</item>
+    </style>
+
+    <!-- Cinema Toolbar -->
+    <style name="Widget.Cinema.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/toolbar_bg</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="subtitleTextColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Seat Button Style -->
+    <style name="Widget.Cinema.SeatButton">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <!-- Ticket Info Row -->
+    <style name="TextAppearance.Cinema.TicketLabel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#78909C</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <style name="TextAppearance.Cinema.TicketValue">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/ticket_text_dark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

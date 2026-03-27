@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Cinema Theme -->
+    <color name="cinema_red">#E53935</color>
+    <color name="cinema_red_dark">#B71C1C</color>
+    <color name="cinema_red_light">#EF9A9A</color>
+    <color name="cinema_gold">#FFD600</color>
+    <color name="cinema_gold_dark">#FFC400</color>
+
+    <!-- Background & Surface -->
+    <color name="bg_dark">#0D0D1A</color>
+    <color name="bg_surface">#1A1A2E</color>
+    <color name="bg_surface_elevated">#252540</color>
+    <color name="bg_card">#1E1E3A</color>
+
+    <!-- Text -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="text_hint">#607D8B</color>
+
+    <!-- Seat Colors -->
+    <color name="seat_available">#37474F</color>
+    <color name="seat_available_border">#546E7A</color>
+    <color name="seat_selected">#FFD600</color>
+    <color name="seat_selected_text">#000000</color>
+    <color name="seat_taken">#2D2D2D</color>
+    <color name="seat_taken_border">#3D3D3D</color>
+
+    <!-- UI Elements -->
+    <color name="divider">#2A2A4A</color>
+    <color name="icon_tint">#90A4AE</color>
+    <color name="toolbar_bg">#12122A</color>
+    <color name="status_bar">#0A0A1A</color>
+    <color name="ripple_red">#33E53935</color>
+    <color name="ripple_gold">#33FFD600</color>
+
+    <!-- Ticket Card -->
+    <color name="ticket_bg">#FFFFFF</color>
+    <color name="ticket_text_dark">#1A1A2E</color>
+    <color name="ticket_separator">#E0E0E0</color>
+    <color name="ticket_header_bg">#1A1A2E</color>
 </resources>
