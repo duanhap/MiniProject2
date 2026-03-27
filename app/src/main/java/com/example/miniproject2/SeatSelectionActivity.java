@@ -14,12 +14,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.miniproject2.dal.AppDatabase;
+import com.example.miniproject2.entities.Movie;
+import com.example.miniproject2.entities.Showtime;
+import com.example.miniproject2.entities.Theater;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class SeatSelectionActivity extends AppCompatActivity {
@@ -28,7 +35,6 @@ public class SeatSelectionActivity extends AppCompatActivity {
     private static final int COLS    = 8;   // 1–8
     private static final char FIRST_ROW_CHAR = 'A';
 
-    // Pre-taken seats (simulate already booked)
     private static final Set<String> TAKEN_SEATS = new HashSet<>();
     static {
         TAKEN_SEATS.add("A3"); TAKEN_SEATS.add("A4");
@@ -39,28 +45,26 @@ public class SeatSelectionActivity extends AppCompatActivity {
     }
 
     private final Set<String> selectedSeats = new HashSet<>();
-    private long pricePerSeat;
-    private String movieTitle, theaterName, showtimeTime;
+    private int showtimeId;
+    private Showtime showtime;
+    private Movie movie;
+    private Theater theater;
 
     private TextView tvSelectedSeats, tvTotalPrice;
     private MaterialButton btnConfirm;
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm, dd/MM", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_selection);
 
-        // Retrieve data from intent
-        movieTitle   = getIntent().getStringExtra("movie_title");
-        theaterName  = getIntent().getStringExtra("theater_name");
-        showtimeTime = getIntent().getStringExtra("showtime_time");
-        pricePerSeat = getIntent().getLongExtra("showtime_price", 120000L);
+        showtimeId = getIntent().getIntExtra("showtimeId", -1);
 
         setupToolbar();
-        setupInfoHeader();
         initViews();
         buildSeatGrid();
-        updateSummary();
+        loadData();
     }
 
     private void setupToolbar() {
@@ -68,15 +72,6 @@ public class SeatSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
-    }
-
-    private void setupInfoHeader() {
-        TextView tvMovie    = findViewById(R.id.tvSeatMovieTitle);
-        TextView tvTheater  = findViewById(R.id.tvSeatTheater);
-        TextView tvShowtime = findViewById(R.id.tvSeatShowtime);
-        if (movieTitle   != null) tvMovie.setText(movieTitle);
-        if (theaterName  != null) tvTheater.setText(theaterName);
-        if (showtimeTime != null) tvShowtime.setText(showtimeTime);
     }
 
     private void initViews() {
@@ -93,25 +88,46 @@ public class SeatSelectionActivity extends AppCompatActivity {
         });
     }
 
+    private void loadData() {
+        if (showtimeId == -1) return;
+
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            showtime = AppDatabase.getInstance(this).showtimeDAO().findById(showtimeId);
+            if (showtime != null) {
+                movie = AppDatabase.getInstance(this).movieDAO().findById(showtime.getMovieId());
+                theater = AppDatabase.getInstance(this).theaterDAO().findById(showtime.getTheaterId());
+                
+                runOnUiThread(() -> {
+                    updateHeader();
+                    updateSummary();
+                });
+            }
+        });
+    }
+
+    private void updateHeader() {
+        TextView tvMovie    = findViewById(R.id.tvSeatMovieTitle);
+        TextView tvTheater  = findViewById(R.id.tvSeatTheater);
+        TextView tvShowtime = findViewById(R.id.tvSeatShowtime);
+        
+        if (movie != null) tvMovie.setText(movie.getTitle());
+        if (theater != null) tvTheater.setText(theater.getName());
+        if (showtime != null) tvShowtime.setText(timeFormat.format(new Date(showtime.getShowTime())));
+    }
+
     private void buildSeatGrid() {
         GridLayout grid = findViewById(R.id.gridSeats);
-        grid.setRowCount(ROWS + 1); // +1 for column header row
-        grid.setColumnCount(COLS + 1); // +1 for row label column
+        grid.setRowCount(ROWS + 1);
+        grid.setColumnCount(COLS + 1);
 
-        // Column header (numbers 1–8)
         addHeaderCell(grid, "", 0, 0);
         for (int col = 1; col <= COLS; col++) {
             addHeaderCell(grid, String.valueOf(col), 0, col);
         }
 
-        // Seat rows (A–G)
         for (int row = 0; row < ROWS; row++) {
             char rowChar = (char) (FIRST_ROW_CHAR + row);
-
-            // Row label
             addHeaderCell(grid, String.valueOf(rowChar), row + 1, 0);
-
-            // Seat buttons
             for (int col = 1; col <= COLS; col++) {
                 String seatLabel = rowChar + String.valueOf(col);
                 addSeatView(grid, seatLabel, row + 1, col);
@@ -176,7 +192,6 @@ public class SeatSelectionActivity extends AppCompatActivity {
 
         applySeatAppearance(seat, isNowSelected);
 
-        // Scale animation
         ScaleAnimation scale;
         if (isNowSelected) {
             scale = new ScaleAnimation(1f, 1.15f, 1f, 1.15f,
@@ -206,31 +221,32 @@ public class SeatSelectionActivity extends AppCompatActivity {
 
     private void updateSummary() {
         int count    = selectedSeats.size();
-        long total   = count * pricePerSeat;
+        double pricePerSeat = showtime != null ? showtime.getPrice() : 0;
+        double total   = count * pricePerSeat;
 
         if (count == 0) {
             tvSelectedSeats.setText(getString(R.string.seat_none_selected));
         } else {
             List<String> sorted = new ArrayList<>(selectedSeats);
             java.util.Collections.sort(sorted);
-            tvSelectedSeats.setText(String.join(", ", sorted));
+            tvSelectedSeats.setText(android.text.TextUtils.join(", ", sorted));
         }
 
-        tvTotalPrice.setText(String.format("%,d đ", total).replace(',', '.'));
+        tvTotalPrice.setText(String.format(Locale.getDefault(), "%,.0f đ", total));
     }
 
     private void navigateToTicket() {
         List<String> sorted = new ArrayList<>(selectedSeats);
         java.util.Collections.sort(sorted);
-        String seatsStr = String.join(", ", sorted);
-        long total = selectedSeats.size() * pricePerSeat;
+        String seatsStr = android.text.TextUtils.join(", ", sorted);
+        double total = selectedSeats.size() * (showtime != null ? showtime.getPrice() : 0);
 
         Intent intent = new Intent(this, TicketActivity.class);
-        intent.putExtra("movie_title",   movieTitle);
-        intent.putExtra("theater_name",  theaterName);
-        intent.putExtra("showtime_time", showtimeTime);
+        intent.putExtra("movie_title",   movie != null ? movie.getTitle() : "");
+        intent.putExtra("theater_name",  theater != null ? theater.getName() : "");
+        intent.putExtra("showtime_time", showtime != null ? timeFormat.format(new Date(showtime.getShowTime())) : "");
         intent.putExtra("selected_seats", seatsStr);
-        intent.putExtra("total_price",   total);
+        intent.putExtra("total_price",   (long)total);
         startActivity(intent);
     }
 }

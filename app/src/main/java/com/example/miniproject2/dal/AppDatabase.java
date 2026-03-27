@@ -51,20 +51,21 @@ public abstract class AppDatabase extends RoomDatabase {
                 userDAO.insert(new User("user1", "123", "Nguyen Van A"));
 
                 // Seed Movies
-                movieDAO.insert(new Movie("Avengers: Endgame", "Marvel movie", 180, "movie"));
-                movieDAO.insert(new Movie("Joker", "DC movie", 122, "movie1"));
-                movieDAO.insert(new Movie("Interstellar", "Sci-fi movie", 169, "movie2"));
+                movieDAO.insert(new Movie("Avengers: Endgame", "Siêu anh hùng Marvel tái đấu Thanos", 181, "phim1"));
+                movieDAO.insert(new Movie("Joker", "Câu chuyện về kẻ phản diện khét tiếng", 122, "phim2"));
+                movieDAO.insert(new Movie("Interstellar", "Hành trình xuyên không gian tìm kiếm hy vọng", 169, "phim3"));
+                movieDAO.insert(new Movie("Spider-Man: No Way Home", "Người nhện đối đầu đa vũ trụ", 148, "phim4"));
 
                 // Seed Theaters
-                theaterDAO.insert(new Theater("CGV Vincom", "District 1, HCM"));
-                theaterDAO.insert(new Theater("Lotte Cinema", "District 7, HCM"));
+                theaterDAO.insert(new Theater("CGV Vincom Center", "72 Lê Thánh Tôn, Q.1, TP.HCM"));
+                theaterDAO.insert(new Theater("Lotte Cinema Gò Vấp", "242 Nguyễn Văn Nghi, Gò Vấp"));
 
-                // Seed Showtimes (Assuming IDs start from 1)
-                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 3600000, 100000));
-                showtimeDAO.insert(new Showtime(1, 2, System.currentTimeMillis() + 7200000, 95000));
+                // Seed Showtimes
+                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 3600000, 110000));
+                showtimeDAO.insert(new Showtime(1, 2, System.currentTimeMillis() + 7200000, 100000));
                 showtimeDAO.insert(new Showtime(2, 1, System.currentTimeMillis() + 10800000, 120000));
-                showtimeDAO.insert(new Showtime(3, 1, System.currentTimeMillis() + 14400000, 110000));
-                showtimeDAO.insert(new Showtime(3, 2, System.currentTimeMillis() + 18000000, 105000));
+                showtimeDAO.insert(new Showtime(3, 1, System.currentTimeMillis() + 14400000, 115000));
+                showtimeDAO.insert(new Showtime(4, 2, System.currentTimeMillis() + 18000000, 125000));
             });
         }
     };

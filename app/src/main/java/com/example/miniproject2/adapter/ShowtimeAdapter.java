@@ -12,23 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.miniproject2.R;
 import com.example.miniproject2.SeatSelectionActivity;
-import com.example.miniproject2.model.Showtime;
-import com.google.android.material.button.MaterialButton;
+import com.example.miniproject2.entities.Showtime;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.ShowtimeViewHolder> {
 
     private final Context context;
     private final List<Showtime> showtimes;
-    private final String movieTitle;
-    private final String theaterName;
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm, dd/MM", Locale.getDefault());
 
-    public ShowtimeAdapter(Context context, List<Showtime> showtimes, String movieTitle, String theaterName) {
+    public ShowtimeAdapter(Context context, List<Showtime> showtimes) {
         this.context = context;
         this.showtimes = showtimes;
-        this.movieTitle = movieTitle;
-        this.theaterName = theaterName;
     }
 
     @NonNull
@@ -41,20 +40,25 @@ public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.Showti
     @Override
     public void onBindViewHolder(@NonNull ShowtimeViewHolder holder, int position) {
         Showtime showtime = showtimes.get(position);
-        holder.tvTime.setText(showtime.getTime());
-        holder.tvPrice.setText(showtime.getPriceFormatted());
+        
+        holder.tvTime.setText(timeFormat.format(new Date(showtime.getShowTime())));
+        holder.tvPrice.setText(String.format(Locale.getDefault(), "%,.0f đ", showtime.getPrice()));
 
-        holder.btnSelect.setOnClickListener(v -> navigateToSeatSelection(showtime));
-        holder.itemView.setOnClickListener(v -> navigateToSeatSelection(showtime));
-    }
-
-    private void navigateToSeatSelection(Showtime showtime) {
-        Intent intent = new Intent(context, SeatSelectionActivity.class);
-        intent.putExtra("movie_title", movieTitle);
-        intent.putExtra("theater_name", theaterName);
-        intent.putExtra("showtime_time", showtime.getTime());
-        intent.putExtra("showtime_price", showtime.getPrice());
-        context.startActivity(intent);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SeatSelectionActivity.class);
+            intent.putExtra("showtimeId", showtime.getId());
+            intent.putExtra("price", showtime.getPrice());
+            context.startActivity(intent);
+        });
+        
+        if (holder.btnSelect != null) {
+            holder.btnSelect.setOnClickListener(v -> {
+                Intent intent = new Intent(context, SeatSelectionActivity.class);
+                intent.putExtra("showtimeId", showtime.getId());
+                intent.putExtra("price", showtime.getPrice());
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override
@@ -62,12 +66,12 @@ public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.Showti
 
     static class ShowtimeViewHolder extends RecyclerView.ViewHolder {
         TextView tvTime, tvPrice;
-        MaterialButton btnSelect;
+        View btnSelect;
 
         ShowtimeViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTime   = itemView.findViewById(R.id.tvShowtime);
-            tvPrice  = itemView.findViewById(R.id.tvShowtimePrice);
+            tvTime  = itemView.findViewById(R.id.tvShowtime);
+            tvPrice = itemView.findViewById(R.id.tvShowtimePrice);
             btnSelect = itemView.findViewById(R.id.btnSelectShowtime);
         }
     }
