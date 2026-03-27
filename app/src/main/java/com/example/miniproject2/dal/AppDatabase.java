@@ -47,8 +47,8 @@ public abstract class AppDatabase extends RoomDatabase {
                 ShowtimeDAO showtimeDAO = instance.showtimeDAO();
 
                 // Seed Users
-                userDAO.insert(new User("admin", "123", "Administrator"));
-                userDAO.insert(new User("user1", "123", "Nguyen Van A"));
+                userDAO.insert(new User("admin", "123456", "Administrator"));
+                userDAO.insert(new User("user1", "123456", "Nguyen Van A"));
 
                 // Seed Movies
                 movieDAO.insert(new Movie("Avengers: Endgame", "Siêu anh hùng Marvel tái đấu Thanos", 181, "phim1"));

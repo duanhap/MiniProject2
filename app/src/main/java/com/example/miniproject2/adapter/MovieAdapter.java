@@ -49,12 +49,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             }
         }
 
-        // Click → navigate to ShowtimeActivity with movieId
-        holder.itemView.setOnClickListener(v -> {
+        // Click card or book button -> navigate to ShowtimeActivity with movieId
+        View.OnClickListener openShowtimes = v -> {
             Intent intent = new Intent(context, ShowtimeActivity.class);
             intent.putExtra("movieId", movie.getId());
             context.startActivity(intent);
-        });
+        };
+        holder.itemView.setOnClickListener(openShowtimes);
+        holder.btnBookMovie.setOnClickListener(openShowtimes);
     }
 
     @Override
@@ -65,12 +67,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
         TextView tvTitle, tvDuration;
+        View btnBookMovie;
 
         MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPoster = itemView.findViewById(R.id.ivMoviePoster);
             tvTitle  = itemView.findViewById(R.id.tvMovieTitle);
             tvDuration = itemView.findViewById(R.id.tvMovieDuration);
+            btnBookMovie = itemView.findViewById(R.id.btnBookMovie);
         }
     }
 }
