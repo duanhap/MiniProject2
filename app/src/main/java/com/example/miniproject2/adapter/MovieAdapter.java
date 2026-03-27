@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.miniproject2.R;
-import com.example.miniproject2.TheaterActivity;
-import com.example.miniproject2.model.Movie;
+import com.example.miniproject2.ShowtimeActivity;
+import com.example.miniproject2.entities.Movie;
 
 import java.util.List;
 
@@ -39,26 +39,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
 
         holder.tvTitle.setText(movie.getTitle());
-        holder.tvDuration.setText(movie.getDurationFormatted());
+        holder.tvDuration.setText(movie.getDuration() + " min");
 
-        // Set poster image if available, else keep gradient background
-        if (movie.getImageResId() != 0) {
-            holder.ivPoster.setImageResource(movie.getImageResId());
+        // Display image from drawable resource name
+        if (movie.getImage() != null && !movie.getImage().isEmpty()) {
+            int resId = context.getResources().getIdentifier(movie.getImage(), "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.ivPoster.setImageResource(resId);
+            }
         }
 
-        // "Book Ticket" button → navigate to TheaterActivity
-        holder.btnBook.setOnClickListener(v -> {
-            Intent intent = new Intent(context, TheaterActivity.class);
-            intent.putExtra("movie_title", movie.getTitle());
-            intent.putExtra("movie_duration", movie.getDuration());
-            context.startActivity(intent);
-        });
-
-        // Also allow tapping card
+        // Click → navigate to ShowtimeActivity with movieId
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, TheaterActivity.class);
-            intent.putExtra("movie_title", movie.getTitle());
-            intent.putExtra("movie_duration", movie.getDuration());
+            Intent intent = new Intent(context, ShowtimeActivity.class);
+            intent.putExtra("movieId", movie.getId());
             context.startActivity(intent);
         });
     }
@@ -71,14 +65,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
         TextView tvTitle, tvDuration;
-        View btnBook;
 
         MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPoster = itemView.findViewById(R.id.ivMoviePoster);
             tvTitle  = itemView.findViewById(R.id.tvMovieTitle);
             tvDuration = itemView.findViewById(R.id.tvMovieDuration);
-            btnBook  = itemView.findViewById(R.id.btnBookMovie);
         }
     }
 }
