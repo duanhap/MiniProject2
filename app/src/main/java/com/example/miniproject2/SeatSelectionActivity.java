@@ -1,6 +1,7 @@
 package com.example.miniproject2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import com.example.miniproject2.dal.AppDatabase;
 import com.example.miniproject2.entities.Movie;
 import com.example.miniproject2.entities.Showtime;
 import com.example.miniproject2.entities.Theater;
+import com.example.miniproject2.entities.Ticket;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
@@ -58,6 +60,11 @@ public class SeatSelectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_selection);
+
+        if (!isUserLoggedIn()) {
+            openLoginAndFinish();
+            return;
+        }
 
         showtimeId = getIntent().getIntExtra("showtimeId", -1);
 
@@ -240,13 +247,45 @@ public class SeatSelectionActivity extends AppCompatActivity {
         java.util.Collections.sort(sorted);
         String seatsStr = android.text.TextUtils.join(", ", sorted);
         double total = selectedSeats.size() * (showtime != null ? showtime.getPrice() : 0);
+        int userId = getLoggedInUserId();
+        if (userId <= 0 || showtime == null) {
+            Toast.makeText(this, "Thông tin đặt vé không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Intent intent = new Intent(this, TicketActivity.class);
-        intent.putExtra("movie_title",   movie != null ? movie.getTitle() : "");
-        intent.putExtra("theater_name",  theater != null ? theater.getName() : "");
-        intent.putExtra("showtime_time", showtime != null ? timeFormat.format(new Date(showtime.getShowTime())) : "");
-        intent.putExtra("selected_seats", seatsStr);
-        intent.putExtra("total_price",   (long)total);
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            double seatPrice = showtime.getPrice();
+            for (String seat : sorted) {
+                Ticket ticket = new Ticket(userId, showtimeId, seat, seatPrice);
+                AppDatabase.getInstance(this).ticketDAO().insert(ticket);
+            }
+
+            runOnUiThread(() -> {
+                Intent intent = new Intent(this, TicketActivity.class);
+                intent.putExtra("movie_title",   movie != null ? movie.getTitle() : "");
+                intent.putExtra("theater_name",  theater != null ? theater.getName() : "");
+                intent.putExtra("showtime_time", showtime != null ? timeFormat.format(new Date(showtime.getShowTime())) : "");
+                intent.putExtra("selected_seats", seatsStr);
+                intent.putExtra("total_price",   (long) total);
+                startActivity(intent);
+            });
+        });
+    }
+
+    private boolean isUserLoggedIn() {
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_NAME, MODE_PRIVATE);
+        return prefs.getBoolean(LoginActivity.KEY_IS_LOGGED_IN, false);
+    }
+
+    private int getLoggedInUserId() {
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_NAME, MODE_PRIVATE);
+        return prefs.getInt(LoginActivity.KEY_USER_ID, -1);
+    }
+
+    private void openLoginAndFinish() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.EXTRA_SHOWTIME_ID, getIntent().getIntExtra("showtimeId", -1));
         startActivity(intent);
+        finish();
     }
 }

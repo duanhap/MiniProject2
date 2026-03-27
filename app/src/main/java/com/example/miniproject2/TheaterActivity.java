@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import com.example.miniproject2.adapter.TheaterAdapter;
-import com.example.miniproject2.model.Theater;
+import com.example.miniproject2.entities.Theater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class TheaterActivity extends AppCompatActivity {
         recyclerTheaters.setLayoutManager(new LinearLayoutManager(this));
 
         List<Theater> theaters = getSampleTheaters();
-        TheaterAdapter adapter = new TheaterAdapter(this, theaters, movieTitle);
+        TheaterAdapter adapter = new TheaterAdapter(this, theaters);
         recyclerTheaters.setAdapter(adapter);
     }
 

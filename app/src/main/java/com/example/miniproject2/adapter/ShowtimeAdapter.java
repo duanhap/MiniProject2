@@ -2,6 +2,7 @@ package com.example.miniproject2.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.miniproject2.R;
+import com.example.miniproject2.LoginActivity;
 import com.example.miniproject2.SeatSelectionActivity;
 import com.example.miniproject2.entities.Showtime;
 
@@ -44,21 +46,27 @@ public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.Showti
         holder.tvTime.setText(timeFormat.format(new Date(showtime.getShowTime())));
         holder.tvPrice.setText(String.format(Locale.getDefault(), "%,.0f đ", showtime.getPrice()));
 
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SeatSelectionActivity.class);
-            intent.putExtra("showtimeId", showtime.getId());
-            intent.putExtra("price", showtime.getPrice());
-            context.startActivity(intent);
-        });
+        holder.itemView.setOnClickListener(v -> openNextScreen(showtime));
         
         if (holder.btnSelect != null) {
-            holder.btnSelect.setOnClickListener(v -> {
-                Intent intent = new Intent(context, SeatSelectionActivity.class);
-                intent.putExtra("showtimeId", showtime.getId());
-                intent.putExtra("price", showtime.getPrice());
-                context.startActivity(intent);
-            });
+            holder.btnSelect.setOnClickListener(v -> openNextScreen(showtime));
         }
+    }
+
+    private void openNextScreen(Showtime showtime) {
+        SharedPreferences prefs = context.getSharedPreferences(LoginActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean(LoginActivity.KEY_IS_LOGGED_IN, false);
+
+        Intent intent;
+        if (isLoggedIn) {
+            intent = new Intent(context, SeatSelectionActivity.class);
+            intent.putExtra("showtimeId", showtime.getId());
+            intent.putExtra("price", showtime.getPrice());
+        } else {
+            intent = new Intent(context, LoginActivity.class);
+            intent.putExtra(LoginActivity.EXTRA_SHOWTIME_ID, showtime.getId());
+        }
+        context.startActivity(intent);
     }
 
     @Override
