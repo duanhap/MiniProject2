@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             prefs.edit()
                     .putBoolean(LoginActivity.KEY_IS_LOGGED_IN, false)
                     .remove(LoginActivity.KEY_USER_ID)
+                    .remove(LoginActivity.KEY_USERNAME)
                     .apply();
             Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_SHORT).show();
             updateAuthUi();
@@ -54,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
     private void updateAuthUi() {
         SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_NAME, MODE_PRIVATE);
         boolean loggedIn = prefs.getBoolean(LoginActivity.KEY_IS_LOGGED_IN, false);
-        int userId = prefs.getInt(LoginActivity.KEY_USER_ID, -1);
+        String username = prefs.getString(LoginActivity.KEY_USERNAME, "");
 
-        if (loggedIn && userId > 0) {
+        if (loggedIn && username != null && !username.trim().isEmpty()) {
             btnLogin.setText("Đăng xuất");
-            tvAuthStatus.setText("Đã đăng nhập • userId: " + userId);
+            tvAuthStatus.setText("Đã đăng nhập • " + username);
         } else {
             btnLogin.setText("Đăng nhập");
             tvAuthStatus.setText("Bạn chưa đăng nhập");
