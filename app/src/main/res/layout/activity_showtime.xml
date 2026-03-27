@@ -27,27 +27,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:background="@color/bg_surface"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvShowtimeMovieTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            tools:text="Avengers: Endgame" />
+        <ImageView
+            android:id="@+id/ivShowtimeMoviePoster"
+            android:layout_width="56dp"
+            android:layout_height="76dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_movie_poster"
+            android:contentDescription="Movie poster"
+            tools:src="@drawable/phim1" />
 
-        <TextView
-            android:id="@+id/tvShowtimeTheater"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/cinema_red"
-            android:textSize="13sp"
-            android:layout_marginTop="2dp"
-            tools:text="CGV Vincom Center" />
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvShowtimeMovieTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Avengers: Endgame" />
+
+            <TextView
+                android:id="@+id/tvShowtimeTheater"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinema_red"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp"
+                tools:text="CGV Vincom Center" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
