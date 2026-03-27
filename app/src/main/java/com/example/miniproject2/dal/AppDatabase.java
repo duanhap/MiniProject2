@@ -61,11 +61,16 @@ public abstract class AppDatabase extends RoomDatabase {
                 theaterDAO.insert(new Theater("Lotte Cinema Gò Vấp", "242 Nguyễn Văn Nghi, Gò Vấp"));
 
                 // Seed Showtimes
-                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 3600000, 110000));
-                showtimeDAO.insert(new Showtime(1, 2, System.currentTimeMillis() + 7200000, 100000));
-                showtimeDAO.insert(new Showtime(2, 1, System.currentTimeMillis() + 10800000, 120000));
-                showtimeDAO.insert(new Showtime(3, 1, System.currentTimeMillis() + 14400000, 115000));
-                showtimeDAO.insert(new Showtime(4, 2, System.currentTimeMillis() + 18000000, 125000));
+                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 3600000, 110000));   // Avengers - CGV - 1h later
+                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 10800000, 110000));  // Avengers - CGV - 3h later
+                showtimeDAO.insert(new Showtime(1, 2, System.currentTimeMillis() + 7200000, 100000));   // Avengers - Lotte - 2h later
+                showtimeDAO.insert(new Showtime(2, 1, System.currentTimeMillis() + 10800000, 120000));  // Joker - CGV - 3h later
+                showtimeDAO.insert(new Showtime(2, 2, System.currentTimeMillis() + 14400000, 115000));  // Joker - Lotte - 4h later
+                showtimeDAO.insert(new Showtime(3, 1, System.currentTimeMillis() + 14400000, 115000));  // Interstellar - CGV - 4h later
+                showtimeDAO.insert(new Showtime(3, 2, System.currentTimeMillis() + 3600000, 110000));   // Interstellar - Lotte - 1h later
+                showtimeDAO.insert(new Showtime(4, 1, System.currentTimeMillis() + 18000000, 130000));  // Spider-Man - CGV - 5h later
+                showtimeDAO.insert(new Showtime(4, 2, System.currentTimeMillis() + 18000000, 125000));  // Spider-Man - Lotte - 5h later
+                showtimeDAO.insert(new Showtime(1, 1, System.currentTimeMillis() + 25200000, 140000));  // Avengers - CGV - 7h later
             });
         }
     };
