@@ -1,3 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MiniProject2</string>
+    <!-- App Name -->
+    <string name="app_name">CineBook</string>
+
+    <!-- Login -->
+    <string name="login_title">CineBook</string>
+    <string name="login_subtitle">Đặt vé xem phim dễ dàng</string>
+    <string name="hint_username">Tên đăng nhập</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="btn_login">Đăng Nhập</string>
+    <string name="login_welcome">Chào mừng trở lại 👋</string>
+
+    <!-- Movie List -->
+    <string name="movie_list_title">Phim Đang Chiếu</string>
+    <string name="duration_format">%d phút</string>
+    <string name="btn_book">Đặt Vé</string>
+    <string name="movie_search_hint">Tìm kiếm phim…</string>
+
+    <!-- Theater -->
+    <string name="theater_title">Chọn Rạp Chiếu</string>
+    <string name="theater_select_hint">Chọn rạp gần bạn</string>
+
+    <!-- Showtime -->
+    <string name="showtime_title">Chọn Suất Chiếu</string>
+    <string name="price_format">%,d đ</string>
+    <string name="btn_select_time">Chọn</string>
+
+    <!-- Seat Selection -->
+    <string name="seat_title">Chọn Ghế</string>
+    <string name="seat_available">Còn trống</string>
+    <string name="seat_selected">Đã chọn</string>
+    <string name="seat_taken">Đã đặt</string>
+    <string name="seat_screen">MÀN HÌNH</string>
+    <string name="seat_summary_format">%d ghế • Tổng: %,d đ</string>
+    <string name="btn_confirm">Xác Nhận Ghế</string>
+    <string name="seat_none_selected">Chưa chọn ghế</string>
+
+    <!-- Ticket -->
+    <string name="ticket_title">Vé Của Bạn</string>
+    <string name="ticket_movie_label">PHIM</string>
+    <string name="ticket_theater_label">RẠP</string>
+    <string name="ticket_time_label">SUẤT CHIẾU</string>
+    <string name="ticket_seat_label">GHẾ</string>
+    <string name="ticket_price_label">TỔNG TIỀN</string>
+    <string name="ticket_booking_id">MÃ ĐẶT VÉ</string>
+    <string name="btn_download">Tải Vé</string>
+    <string name="btn_share">Chia Sẻ</string>
+    <string name="ticket_enjoy">Chúc bạn xem phim vui vẻ! 🎬</string>
+
+    <!-- Intent Keys -->
+    <string name="key_movie_title">movie_title</string>
+    <string name="key_movie_duration">movie_duration</string>
+    <string name="key_theater_name">theater_name</string>
+    <string name="key_theater_location">theater_location</string>
+    <string name="key_showtime">showtime_time</string>
+    <string name="key_price">showtime_price</string>
+    <string name="key_seats">selected_seats</string>
+    <string name="key_total_price">total_price</string>
 </resources>

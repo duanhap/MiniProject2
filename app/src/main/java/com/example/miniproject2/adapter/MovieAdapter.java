@@ -1,0 +1,84 @@
+package com.example.miniproject2.adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.miniproject2.R;
+import com.example.miniproject2.TheaterActivity;
+import com.example.miniproject2.model.Movie;
+
+import java.util.List;
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+
+    private final Context context;
+    private final List<Movie> movies;
+
+    public MovieAdapter(Context context, List<Movie> movies) {
+        this.context = context;
+        this.movies = movies;
+    }
+
+    @NonNull
+    @Override
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+        return new MovieViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+        Movie movie = movies.get(position);
+
+        holder.tvTitle.setText(movie.getTitle());
+        holder.tvDuration.setText(movie.getDurationFormatted());
+
+        // Set poster image if available, else keep gradient background
+        if (movie.getImageResId() != 0) {
+            holder.ivPoster.setImageResource(movie.getImageResId());
+        }
+
+        // "Book Ticket" button → navigate to TheaterActivity
+        holder.btnBook.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TheaterActivity.class);
+            intent.putExtra("movie_title", movie.getTitle());
+            intent.putExtra("movie_duration", movie.getDuration());
+            context.startActivity(intent);
+        });
+
+        // Also allow tapping card
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TheaterActivity.class);
+            intent.putExtra("movie_title", movie.getTitle());
+            intent.putExtra("movie_duration", movie.getDuration());
+            context.startActivity(intent);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return movies.size();
+    }
+
+    static class MovieViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivPoster;
+        TextView tvTitle, tvDuration;
+        View btnBook;
+
+        MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivPoster = itemView.findViewById(R.id.ivMoviePoster);
+            tvTitle  = itemView.findViewById(R.id.tvMovieTitle);
+            tvDuration = itemView.findViewById(R.id.tvMovieDuration);
+            btnBook  = itemView.findViewById(R.id.btnBookMovie);
+        }
+    }
+}
