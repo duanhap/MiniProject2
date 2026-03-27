@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "movie_booking_prefs";
     public static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     public static final String KEY_USER_ID = "userId";
+    public static final String KEY_USERNAME = "username";
     public static final String EXTRA_SHOWTIME_ID = "extra_showtime_id";
 
     private TextInputLayout tilUsername, tilPassword;
@@ -84,18 +85,19 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                saveLoginState(user.getId());
+                saveLoginState(user);
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 navigateAfterLogin();
             });
         });
     }
 
-    private void saveLoginState(int userId) {
+    private void saveLoginState(User user) {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         prefs.edit()
                 .putBoolean(KEY_IS_LOGGED_IN, true)
-                .putInt(KEY_USER_ID, userId)
+                .putInt(KEY_USER_ID, user.getId())
+                .putString(KEY_USERNAME, user.getUsername())
                 .apply();
     }
 
